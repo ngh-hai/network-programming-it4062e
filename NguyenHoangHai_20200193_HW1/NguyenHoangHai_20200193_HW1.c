@@ -174,6 +174,27 @@ int get_number_of_attempts(char *username) {
     return 0;
 }
 
+void free_list_account() {
+    struct account *tmp = list_account;
+    while (tmp != NULL) {
+        struct account *next = tmp->next;
+        free(tmp->username);
+        free(tmp->password);
+        free(tmp);
+        tmp = next;
+    }
+}
+
+void free_list_login_attempt() {
+    struct login_attempt *tmp = list_login_attempt;
+    while (tmp != NULL) {
+        struct login_attempt *next = tmp->next;
+        free(tmp->username);
+        free(tmp);
+        tmp = next;
+    }
+}
+
 void process_register() {
     char *username = (char *) malloc(sizeof(char) * MAX);
     printf("Username: ");
@@ -261,25 +282,10 @@ void process_sign_out() {
     free(username);
 }
 
-void free_list_account() {
-    struct account *tmp = list_account;
-    while (tmp != NULL) {
-        struct account *next = tmp->next;
-        free(tmp->username);
-        free(tmp->password);
-        free(tmp);
-        tmp = next;
-    }
-}
-
-void free_list_login_attempt() {
-    struct login_attempt *tmp = list_login_attempt;
-    while (tmp != NULL) {
-        struct login_attempt *next = tmp->next;
-        free(tmp->username);
-        free(tmp);
-        tmp = next;
-    }
+void process_exit() {
+    free_list_account();
+    free_list_login_attempt();
+    printf("Bye\n");
 }
 
 int main() {
@@ -302,9 +308,7 @@ int main() {
                 process_sign_out();
                 break;
             default:
-                free_list_account();
-                free_list_login_attempt();
-                printf("Bye\n");
+                process_exit();
                 return 0;
         }
     }
