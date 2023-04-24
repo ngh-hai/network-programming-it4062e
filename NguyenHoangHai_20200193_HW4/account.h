@@ -37,15 +37,15 @@ struct account { // account structure
 
 typedef struct account *Account;
 
-Account new_account(char *username, char *password, int attempts, int is_active); // create a new account
+Account new_account(char *, char *, int, int); // create a new account
 
-Account add_account(Account account_list, char *username, char *password, int attempts, int is_active); // free an account
+Account add_account(Account, char *, char *, int, int); // free an account
 
-Account read_account(const char *filename); // read account from file
+Account read_account(const char *); // read account from file
 
-void show_account(Account account_list); // show all account
+void show_account(Account); // show all account
 
-int process_login(Account account_list, char *username, char *password, Account *current_account); // process sign in
+int process_login(Account, char *, char *, Account *); // process sign in
 
-void save_to_file(Account account_list, const char *filename); // save account to file
+void save_to_file(Account, const char *); // save account to file
 #endif

@@ -98,7 +98,6 @@ void *recv_thread(void *_args) {
                 close(client_sock);
                 break;
             }
-            // printf("\nReply from server: %s\n", buff);
             printf("\n%s\n", buff);
         }
     }
@@ -113,7 +112,6 @@ void *send_thread(void *_args) {
     socklen_t sin_size = sizeof(struct sockaddr);
     ssize_t bytes_send;
     do {
-        // printf("\nEnter a message:\n");
         fgets(buff, BUFF_SIZE, stdin);
         buff[strlen(buff) - 1] = '\0';
         bytes_send = sendto(client_sock, buff, strlen(buff), 0, (struct sockaddr *) &server_addr, sin_size);

@@ -26,7 +26,7 @@ Account add_account(Account account_list, char *username, char *password, int at
     return account_list;
 }
 
-Account read_account(const char *filename){
+Account read_account(const char *filename) {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
         printf("Cannot open file %s to read account information !\n", filename);
@@ -63,7 +63,7 @@ int process_login(Account account_list, char *username, char *password, Account 
                 if (tmp->is_active == 1) { // account is active
                     *current_account = tmp;
                     return VALID_CREDENTIALS;
-                } else if (tmp->attempts >= MAX_ATTEMPTS){ // account is inactive
+                } else if (tmp->attempts >= MAX_ATTEMPTS) { // account is inactive
                     return ACCOUNT_BLOCKED;
                 } else { // account is inactive
                     return ACCOUNT_NOT_ACTIVE;
