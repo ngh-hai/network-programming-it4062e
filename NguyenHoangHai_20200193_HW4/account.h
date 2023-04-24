@@ -9,7 +9,6 @@
 
 #define MAX_ATTEMPTS 3
 
-// define some status code
 // 0: username required - both username and password are now not provided
 // 0 can also be used for signed out status
 // 1: password required - username is provided but password is not provided
@@ -27,7 +26,7 @@
 #define ACCOUNT_NOT_ACTIVE 6
 
 
-struct account { // account structure
+struct account {
     char *username;
     char *password;
     int attempts;
@@ -37,15 +36,15 @@ struct account { // account structure
 
 typedef struct account *Account;
 
-Account new_account(char *, char *, int, int); // create a new account
+Account new_account(char *, char *, int, int);
 
-Account add_account(Account, char *, char *, int, int); // free an account
+Account add_account(Account, char *, char *, int, int);
 
-Account read_account(const char *); // read account from file
+Account read_account(const char *);
 
-void show_account(Account); // show all account
+void show_account(Account);
 
-int process_login(Account, char *, char *, Account *); // process sign in
+int process_login(Account, char *, char *, Account *);
 
-void save_to_file(Account, const char *); // save account to file
+void save_to_file(Account, const char *);
 #endif

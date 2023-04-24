@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
         printf("Usage: ./client <ip_address> <port_number>\n");
         return 0;
     }
-    // check if the ip address is valid
+    // check if the IP address is valid
     char *SERV_IP = argv[1];
     if (!is_valid_ipv4_address(SERV_IP)) {
         printf("Error: invalid IP address\n");
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void *recv_thread(void *_args) {
+void *recv_thread(void *_args) { // receive messages from the server
     struct thread_args *args = (struct thread_args *) _args;
     int client_sock = args->client_sock;
     struct sockaddr_in server_addr = args->server_addr;
@@ -104,7 +104,7 @@ void *recv_thread(void *_args) {
     pthread_exit(NULL);
 }
 
-void *send_thread(void *_args) {
+void *send_thread(void *_args) { // send messages to the server
     struct thread_args *args = (struct thread_args *) _args;
     int client_sock = args->client_sock;
     struct sockaddr_in server_addr = args->server_addr;

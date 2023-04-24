@@ -1,5 +1,6 @@
 #include "account.h"
 
+// create new node of account
 Account new_account(char *username, char *password, int attempts, int is_active) {
     Account acc = (Account) malloc(sizeof(struct account));
     acc->username = (char *) malloc(sizeof(char) * MAX_CHARS);
@@ -12,6 +13,7 @@ Account new_account(char *username, char *password, int attempts, int is_active)
     return acc;
 }
 
+// add new node to the end of the list
 Account add_account(Account account_list, char *username, char *password, int attempts, int is_active) {
     Account new_acc = new_account(username, password, attempts, is_active);
     if (account_list == NULL) {
@@ -26,6 +28,7 @@ Account add_account(Account account_list, char *username, char *password, int at
     return account_list;
 }
 
+// read account information from file
 Account read_account(const char *filename) {
     FILE *f = fopen(filename, "r");
     if (f == NULL) {
@@ -43,6 +46,7 @@ Account read_account(const char *filename) {
     return account_list;
 }
 
+// display account information
 void show_account(Account account_list) {
     printf("%-20s%-20s%-20s%-20s", "Username", "Password", "Attempts", "Is Active");
     printf("\n");
@@ -54,6 +58,9 @@ void show_account(Account account_list) {
     }
 }
 
+// process login and return corresponding status
+// also keep track of number of attempts
+// and save successfully logged-in user to current_account
 int process_login(Account account_list, char *username, char *password, Account *current_account) {
     // should return 2 to 5, base on defined constants in account.h
     Account tmp = account_list;
@@ -83,6 +90,7 @@ int process_login(Account account_list, char *username, char *password, Account 
     return ACCOUNT_NOT_EXIST;
 }
 
+// save account information to file
 void save_to_file(Account account_list, const char *filename) {
     FILE *f = fopen(filename, "w+");
     if (f == NULL) {

@@ -12,6 +12,7 @@
 const char *FILENAME = "account.txt";
 const int BUFF_SIZE = 1024;
 
+// process the message and split it into digits and letters
 int process_message(const char *buff, char *digits, char *letters) {
     int i = 0;
     int j = 0;
@@ -47,11 +48,11 @@ int main(int argc, char *argv[]) {
         printf("Error: %s\n", errno == EINVAL ? "invalid base" : "invalid input");
         return 0;
     }
-
+    // initialize the account list
     int status = USERNAME_REQUIRED;
     Account account_list = read_account(FILENAME);
     Account logged_in_user = NULL;
-
+    // initialize the socket
     int server_sock;
     struct sockaddr_in server;
     ssize_t bytes_sent, bytes_received;
@@ -67,7 +68,7 @@ int main(int argc, char *argv[]) {
     server.sin_port = htons(PORT);
     server.sin_addr.s_addr = INADDR_ANY;
     bzero(&(server.sin_zero), 8);
-
+    // bind the socket to the port
     if (bind(server_sock, (struct sockaddr *) &server, sizeof(struct sockaddr)) == -1) {
         perror("\nError: ");
         return 0;
@@ -84,19 +85,20 @@ int main(int argc, char *argv[]) {
         memset(buff, '\0', strlen(buff));
         sin_size = sizeof(struct sockaddr_in);
 
-
+        // receive the message from the client
         bytes_received = recvfrom(server_sock, buff, BUFF_SIZE, 0, (struct sockaddr *) &server,
                                   (socklen_t * ) & sin_size);
         if (bytes_received < 0) {
             perror("\nError: ");
             return 0;
         }
-        buff[bytes_received] = '\0';
+        buff[bytes_received] = '\0'; // add the null-terminating to make it a string
 
 
         printf("Received from client[%s:%d] %s\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port), buff);
 
-        if (strcmp(buff, "") != 0) {
+        if (strcmp(buff, "") != 0) { // check if the message is not empty
+            // make the response base on the current server status
             if (status == USERNAME_REQUIRED) {
                 memset(username, '\0', strlen(username));
                 strcpy(username, buff);
@@ -108,19 +110,19 @@ int main(int argc, char *argv[]) {
                 int result = process_login(account_list, username, password, &logged_in_user);
                 if (result == VALID_CREDENTIALS) {
                     status = VALID_CREDENTIALS;
-                    strcpy(buff, "OK. Welcome to the server!");
+                    strcpy(buff, "OK.");
                 } else if (result == ACCOUNT_NOT_EXIST) {
                     status = USERNAME_REQUIRED;
                     strcpy(buff, "Account does not exist!");
                 } else if (result == WRONG_PASSWORD) {
                     status = USERNAME_REQUIRED;
-                    strcpy(buff, "Not OK. Wrong password!");
+                    strcpy(buff, "Not OK.");
                 } else if (result == ACCOUNT_BLOCKED) {
                     status = USERNAME_REQUIRED;
-                    strcpy(buff, "Account is blocked!");
+                    strcpy(buff, "Account is blocked");
                 } else if (result == ACCOUNT_NOT_ACTIVE) {
                     status = USERNAME_REQUIRED;
-                    strcpy(buff, "Account is not active!");
+                    strcpy(buff, "Account is not ready");
                 }
 
             } else if (status == VALID_CREDENTIALS) {
@@ -128,13 +130,12 @@ int main(int argc, char *argv[]) {
                     status = USERNAME_REQUIRED;
                     strcpy(buff, "Goodbye ");
                     strcat(buff, logged_in_user->username);
-                    strcat(buff, "!");
                     save_to_file(account_list, FILENAME);
                     logged_in_user = NULL;
                 } else {
                     message_status = process_message(buff, digits, letters);
                     if (message_status == 0) {
-                        strcpy(buff, "Error!");
+                        strcpy(buff, "Error");
                     } else {
                         strcpy(logged_in_user->password, buff);
                     }
