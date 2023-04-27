@@ -199,8 +199,7 @@ int main(int argc, char *argv[]) {
                 perror("\nError: ");
                 return 0;
             }
-        } else if (clients[MAX_CLIENTS - idx - 1].sin_addr.s_addr != 0 &&
-                   clients[MAX_CLIENTS - idx - 1].sin_port != 0) {
+        } else if (search_by_client_idx(account_list, MAX_CLIENTS - idx - 1)) {
             bytes_sent = sendto(server_sock, digits, strlen(digits), 0,
                                 (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
                                 clients_size[MAX_CLIENTS - idx - 1]);
