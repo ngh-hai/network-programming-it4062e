@@ -10,7 +10,7 @@
 #include <errno.h>
 
 const char *FILENAME = "account.txt";
-const int BUFF_SIZE = 1024;
+const int MAX_CLIENTS = 2;
 
 // process the message and split it into digits and letters
 int process_message(const char *buff, char *digits, char *letters) {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
         printf("Usage: ./server <port_number>\n");
         return 0;
     }
-    char *buff = (char *) malloc(BUFF_SIZE * sizeof(char));
+    char *buff = (char *) malloc(MAX_CHARS * sizeof(char));
     // check if the port number is valid
     errno = 0;
     uint16_t PORT = strtoul(argv[1], &buff, 10);
@@ -49,12 +49,27 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     // initialize the account list
-    int status = USERNAME_REQUIRED;
+    // int status = USERNAME_REQUIRED;
     Account account_list = read_account(FILENAME);
-    Account logged_in_user = NULL;
+    Account logged_in_user = account_list;
+    while(logged_in_user) {
+        logged_in_user->client_idx = -1;
+        logged_in_user = logged_in_user->next;
+    }
     // initialize the socket
     int server_sock;
     struct sockaddr_in server;
+    struct sockaddr_in client_tmp; /* temporary variable of client address information */
+    struct sockaddr_in clients[MAX_CLIENTS]; /* a list of clients */
+    for (int i=0;i<MAX_CLIENTS;++i){
+        // initialize with blank address
+        bzero(&(clients[i]), sizeof(struct sockaddr_in));
+    }
+    socklen_t clients_size[MAX_CLIENTS]; /* a list of clients' size */
+    int clients_status[MAX_CLIENTS];
+    for (int i = 0; i < MAX_CLIENTS; ++i) {
+        clients_status[i] = USERNAME_REQUIRED;
+    }
     ssize_t bytes_sent, bytes_received;
     int sin_size;
 
@@ -74,94 +89,135 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    char *username = (char *) malloc(BUFF_SIZE * sizeof(char));
-    char *password = (char *) malloc(BUFF_SIZE * sizeof(char));
-    char *letters = (char *) malloc(BUFF_SIZE * sizeof(char));
-    char *digits = (char *) malloc(BUFF_SIZE * sizeof(char));
+    char *username = (char *) malloc(MAX_CHARS * sizeof(char));
+    char *password = (char *) malloc(MAX_CHARS * sizeof(char));
+    char *letters = (char *) malloc(MAX_CHARS * sizeof(char));
+    char *digits = (char *) malloc(MAX_CHARS * sizeof(char));
 
 
     while (true) {
         int message_status = 0;
-        memset(buff, '\0', strlen(buff));
+        memset(buff, '\0', MAX_CHARS);
         sin_size = sizeof(struct sockaddr_in);
 
         // receive the message from the client
-        bytes_received = recvfrom(server_sock, buff, BUFF_SIZE, 0, (struct sockaddr *) &server,
+        bytes_received = recvfrom(server_sock, buff, MAX_CHARS - 1, 0, (struct sockaddr *) &client_tmp,
                                   (socklen_t * ) & sin_size);
         if (bytes_received < 0) {
             perror("\nError: ");
             return 0;
         }
-        buff[bytes_received] = '\0'; // add the null-terminating to make it a string
+        // buff[bytes_received] = '\0'; // add the null-terminating to make it a string
+        int idx = 0;
+        bool is_new_client = true;
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (clients[i].sin_addr.s_addr == client_tmp.sin_addr.s_addr &&
+                clients[i].sin_port == client_tmp.sin_port) {
+                is_new_client = false;
+                idx = i; // also get the index of the client_tmp
+                clients_size[i] = sin_size; // update the size of the client_tmp
+                break;
+            }
+        }
+        if (is_new_client) {
+            // add the client_tmp to the list
+            for (int i = 0; i < MAX_CLIENTS; i++) {
+                if (clients[i].sin_addr.s_addr == 0 && clients[i].sin_port == 0) {
+                    clients[i] = client_tmp;
+                    idx = i; // also get the index of the client_tmp
+                    clients_size[i] = sin_size; // update the size of the client_tmp
+                    break;
+                }
+            }
+            printf("New client connected: [%s:%d]\n", inet_ntoa(client_tmp.sin_addr), ntohs(client_tmp.sin_port));
+        }
 
 
-        printf("Received from client[%s:%d] %s\n", inet_ntoa(server.sin_addr), ntohs(server.sin_port), buff);
+        printf("Received from client [%s:%d] %s\n", inet_ntoa(client_tmp.sin_addr), ntohs(client_tmp.sin_port), buff);
 
         if (strcmp(buff, "") != 0) { // check if the message is not empty
             // make the response base on the current server status
-            if (status == USERNAME_REQUIRED) {
-                memset(username, '\0', strlen(username));
+            if (clients_status[idx] == USERNAME_REQUIRED) {
+                memset(username, '\0', MAX_CHARS);
                 strcpy(username, buff);
-                status = PASSWORD_REQUIRED;
+                clients_status[idx] = PASSWORD_REQUIRED;
                 strcpy(buff, "Insert password: ");
-            } else if (status == PASSWORD_REQUIRED) {
-                memset(password, '\0', strlen(password));
+            } else if (clients_status[idx] == PASSWORD_REQUIRED) {
+                memset(password, '\0', MAX_CHARS);
                 strcpy(password, buff);
                 int result = process_login(account_list, username, password, &logged_in_user);
                 if (result == VALID_CREDENTIALS) {
-                    status = VALID_CREDENTIALS;
+                    clients_status[idx] = VALID_CREDENTIALS;
+                    logged_in_user->client_idx = idx;
                     strcpy(buff, "OK.");
                 } else if (result == ACCOUNT_NOT_EXIST) {
-                    status = USERNAME_REQUIRED;
+                    clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Account does not exist!");
                 } else if (result == WRONG_PASSWORD) {
-                    status = USERNAME_REQUIRED;
+                    clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Not OK.");
                 } else if (result == ACCOUNT_BLOCKED) {
-                    status = USERNAME_REQUIRED;
+                    clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Account is blocked");
                 } else if (result == ACCOUNT_NOT_ACTIVE) {
-                    status = USERNAME_REQUIRED;
+                    clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Account is not ready");
+                } else if (result == ACCOUNT_ALREADY_SIGN_IN) {
+                    clients_status[idx] = USERNAME_REQUIRED;
+                    strcpy(buff, "Account is already signed in");
                 }
 
-            } else if (status == VALID_CREDENTIALS) {
+            } else if (clients_status[idx] == VALID_CREDENTIALS) {
+                Account a = search_by_client_idx(account_list, idx);
                 if (strcmp(buff, "bye") == 0) {
-                    status = USERNAME_REQUIRED;
+                    clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Goodbye ");
-                    strcat(buff, logged_in_user->username);
+                    strcat(buff, a->username);
                     save_to_file(account_list, FILENAME);
-                    logged_in_user = NULL;
+                    a->client_idx = -1;
+                } else if (strcmp(buff,"changepassword")==0){
+                    clients_status[idx] = ACCOUNT_CHANGE_PASSWORD;
+                    strcpy(buff,"Insert new password: ");
+                    
                 } else {
                     message_status = process_message(buff, digits, letters);
                     if (message_status == 0) {
                         strcpy(buff, "Error");
-                    } else {
-                        strcpy(logged_in_user->password, buff);
-                    }
+                    } 
                 }
+            } else if (clients_status[idx] == ACCOUNT_CHANGE_PASSWORD) {
+                Account a = search_by_client_idx(account_list, idx);
+                strcpy(a->password, buff);
+                clients_status[idx] = VALID_CREDENTIALS;
+                strcpy(buff, "Password changed successfully.");
             }
         } else {
-            status = USERNAME_REQUIRED;
+            clients_status[idx] = USERNAME_REQUIRED;
+            save_to_file(account_list, FILENAME);
+            Account a = search_by_client_idx(account_list, idx);
+            if (a) {
+                a->client_idx = -1;
+            }
         }
 
 
         if (message_status == 0) {
-            bytes_sent = sendto(server_sock, buff, strlen(buff), 0, (struct sockaddr *) &server,
-                                sizeof(struct sockaddr));
+            bytes_sent = sendto(server_sock, buff, strlen(buff), 0, (struct sockaddr *) &client_tmp,
+                                sin_size);
             if (bytes_sent < 0) {
                 perror("\nError: ");
                 return 0;
             }
-        } else {
-            bytes_sent = sendto(server_sock, digits, strlen(digits), 0, (struct sockaddr *) &server,
-                                sizeof(struct sockaddr));
+        } else if (clients[MAX_CLIENTS - idx - 1].sin_addr.s_addr != 0 &&
+                   clients[MAX_CLIENTS - idx - 1].sin_port != 0){
+            bytes_sent = sendto(server_sock, digits, strlen(digits), 0, (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
+                                clients_size[MAX_CLIENTS - idx - 1]);
             if (bytes_sent < 0) {
                 perror("\nError: ");
                 return 0;
             }
-            bytes_sent = sendto(server_sock, letters, strlen(letters), 0, (struct sockaddr *) &server,
-                                sizeof(struct sockaddr));
+            bytes_sent = sendto(server_sock, letters, strlen(letters), 0, (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
+                                clients_size[MAX_CLIENTS - idx - 1]);
             if (bytes_sent < 0) {
                 perror("\nError: ");
                 return 0;

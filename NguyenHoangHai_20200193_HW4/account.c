@@ -46,6 +46,17 @@ Account read_account(const char *filename) {
     return account_list;
 }
 
+Account search_by_client_idx(Account account_list, int idx) {
+    Account tmp = account_list;
+    while (tmp != NULL) {
+        if (tmp->client_idx == idx) {
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+    return NULL;
+}
+
 // display account information
 void show_account(Account account_list) {
     printf("%-20s%-20s%-20s%-20s", "Username", "Password", "Attempts", "Is Active");
@@ -67,7 +78,9 @@ int process_login(Account account_list, char *username, char *password, Account 
     while (tmp != NULL) {
         if (strcmp(tmp->username, username) == 0) { // found username
             if (strcmp(tmp->password, password) == 0) { // found password
-                if (tmp->is_active == 1) { // account is active
+                if (tmp->client_idx != -1) { // account is already signed in
+                    return ACCOUNT_ALREADY_SIGN_IN;
+                } else if (tmp->is_active == 1) { // account is active
                     *current_account = tmp;
                     return VALID_CREDENTIALS;
                 } else if (tmp->attempts >= MAX_ATTEMPTS) { // account is inactive

@@ -24,6 +24,8 @@
 #define WRONG_PASSWORD 4
 #define ACCOUNT_BLOCKED 5
 #define ACCOUNT_NOT_ACTIVE 6
+#define ACCOUNT_ALREADY_SIGN_IN 7
+#define ACCOUNT_CHANGE_PASSWORD 8
 
 
 struct account {
@@ -31,6 +33,7 @@ struct account {
     char *password;
     int attempts;
     int is_active;
+    int client_idx;
     struct account *next;
 };
 
@@ -47,4 +50,6 @@ void show_account(Account);
 int process_login(Account, char *, char *, Account *);
 
 void save_to_file(Account, const char *);
+
+Account search_by_client_idx(Account, int);
 #endif
