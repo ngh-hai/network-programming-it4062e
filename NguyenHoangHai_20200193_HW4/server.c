@@ -49,11 +49,11 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     // initialize the account list
-    // int status = USERNAME_REQUIRED;
+
     Account account_list = read_account(FILENAME);
     Account logged_in_user = account_list;
-    while(logged_in_user) {
-        logged_in_user->client_idx = -1;
+    while (logged_in_user) {
+        logged_in_user->client_idx = -1; // no account is logged in
         logged_in_user = logged_in_user->next;
     }
     // initialize the socket
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in server;
     struct sockaddr_in client_tmp; /* temporary variable of client address information */
     struct sockaddr_in clients[MAX_CLIENTS]; /* a list of clients */
-    for (int i=0;i<MAX_CLIENTS;++i){
+    for (int i = 0; i < MAX_CLIENTS; ++i) {
         // initialize with blank address
         bzero(&(clients[i]), sizeof(struct sockaddr_in));
     }
@@ -99,15 +99,13 @@ int main(int argc, char *argv[]) {
         int message_status = 0;
         memset(buff, '\0', MAX_CHARS);
         sin_size = sizeof(struct sockaddr_in);
-
         // receive the message from the client
         bytes_received = recvfrom(server_sock, buff, MAX_CHARS - 1, 0, (struct sockaddr *) &client_tmp,
-                                  (socklen_t * ) & sin_size);
+                                  (socklen_t *) &sin_size);
         if (bytes_received < 0) {
             perror("\nError: ");
             return 0;
         }
-        // buff[bytes_received] = '\0'; // add the null-terminating to make it a string
         int idx = 0;
         bool is_new_client = true;
         for (int i = 0; i < MAX_CLIENTS; i++) {
@@ -131,10 +129,7 @@ int main(int argc, char *argv[]) {
             }
             printf("New client connected: [%s:%d]\n", inet_ntoa(client_tmp.sin_addr), ntohs(client_tmp.sin_port));
         }
-
-
         printf("Received from client [%s:%d] %s\n", inet_ntoa(client_tmp.sin_addr), ntohs(client_tmp.sin_port), buff);
-
         if (strcmp(buff, "") != 0) { // check if the message is not empty
             // make the response base on the current server status
             if (clients_status[idx] == USERNAME_REQUIRED) {
@@ -166,7 +161,6 @@ int main(int argc, char *argv[]) {
                     clients_status[idx] = USERNAME_REQUIRED;
                     strcpy(buff, "Account is already signed in");
                 }
-
             } else if (clients_status[idx] == VALID_CREDENTIALS) {
                 Account a = search_by_client_idx(account_list, idx);
                 if (strcmp(buff, "bye") == 0) {
@@ -175,15 +169,14 @@ int main(int argc, char *argv[]) {
                     strcat(buff, a->username);
                     save_to_file(account_list, FILENAME);
                     a->client_idx = -1;
-                } else if (strcmp(buff,"changepassword")==0){
+                } else if (strcmp(buff, "changepassword") == 0) {
                     clients_status[idx] = ACCOUNT_CHANGE_PASSWORD;
-                    strcpy(buff,"Insert new password: ");
-                    
+                    strcpy(buff, "Insert new password: ");
                 } else {
                     message_status = process_message(buff, digits, letters);
                     if (message_status == 0) {
                         strcpy(buff, "Error");
-                    } 
+                    }
                 }
             } else if (clients_status[idx] == ACCOUNT_CHANGE_PASSWORD) {
                 Account a = search_by_client_idx(account_list, idx);
@@ -200,23 +193,23 @@ int main(int argc, char *argv[]) {
             }
         }
 
-
         if (message_status == 0) {
-            bytes_sent = sendto(server_sock, buff, strlen(buff), 0, (struct sockaddr *) &client_tmp,
-                                sin_size);
+            bytes_sent = sendto(server_sock, buff, strlen(buff), 0, (struct sockaddr *) &client_tmp, sin_size);
             if (bytes_sent < 0) {
                 perror("\nError: ");
                 return 0;
             }
         } else if (clients[MAX_CLIENTS - idx - 1].sin_addr.s_addr != 0 &&
-                   clients[MAX_CLIENTS - idx - 1].sin_port != 0){
-            bytes_sent = sendto(server_sock, digits, strlen(digits), 0, (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
+                   clients[MAX_CLIENTS - idx - 1].sin_port != 0) {
+            bytes_sent = sendto(server_sock, digits, strlen(digits), 0,
+                                (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
                                 clients_size[MAX_CLIENTS - idx - 1]);
             if (bytes_sent < 0) {
                 perror("\nError: ");
                 return 0;
             }
-            bytes_sent = sendto(server_sock, letters, strlen(letters), 0, (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
+            bytes_sent = sendto(server_sock, letters, strlen(letters), 0,
+                                (struct sockaddr *) &clients[MAX_CLIENTS - idx - 1],
                                 clients_size[MAX_CLIENTS - idx - 1]);
             if (bytes_sent < 0) {
                 perror("\nError: ");

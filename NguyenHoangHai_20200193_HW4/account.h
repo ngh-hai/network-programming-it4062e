@@ -52,4 +52,5 @@ int process_login(Account, char *, char *, Account *);
 void save_to_file(Account, const char *);
 
 Account search_by_client_idx(Account, int);
+
 #endif
