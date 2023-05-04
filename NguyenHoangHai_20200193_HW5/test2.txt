@@ -1,0 +1,303 @@
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
+This is a basic server-side code in C for a simple client-server application that allows the client to choose between three options: send a message, upload a file, or exit.
+
+The code starts by including necessary header files and defining constants for the port number, backlog size, and buffer size. It then declares variables for the listening socket, connection socket, server and client address info, and the buffer for received data.
+
+The code creates a TCP socket using the socket() function, binds it to the server's address using the bind() function, and starts listening for incoming connections using the listen() function. It enters a loop to handle incoming connections.
+
+When a client connects, the code accepts the connection using the accept() function, prints the client's IP address, and enters a loop to communicate with the client.
+
+In this loop, the code receives data from the client using the recv() function, checks if the client has closed the connection, and processes the received data according to the client's status (which is initialized to -1 when the client connects). If the client has chosen an option, the code sets the client's status accordingly.
+
+The code then sends a response to the client using the send() function, and checks if the connection was closed. If the client has chosen to exit, the loop is broken, and the connection is closed using the close() function.
+
+Once the loop is broken, the code closes the listening socket and exits.
+
+However, the code does not implement any functionality for sending messages or uploading files. It only checks if the client has chosen these options and sends a response accordingly. This code could serve as a starting point for developing a more complete client-server application that implements these functionalities.
+
