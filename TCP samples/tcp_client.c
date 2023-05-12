@@ -4,9 +4,10 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <string.h>
+#include <unistd.h>
 
 #define SERVER_ADDR "127.0.0.1"
-#define SERVER_PORT 5550
+#define SERVER_PORT 5548
 #define BUFF_SIZE 8192
 
 int main(){
@@ -25,7 +26,7 @@ int main(){
 	
 	//Step 3: Request to connect server
 	if(connect(client_sock, (struct sockaddr*)&server_addr, sizeof(struct sockaddr)) < 0){
-		printf("\nError!Can not connect to sever! Client exit imediately! ");
+		printf("\nError!Can not connect to sever! Client exit immediately! ");
 		return 0;
 	}
 		
@@ -35,19 +36,31 @@ int main(){
 		printf("\nInsert string to send:");
 		memset(buff,'\0',(strlen(buff)+1));
 		fgets(buff, BUFF_SIZE, stdin);		
-		msg_len = strlen(buff);
-		if (smsg_len == 0) break;
-		
-		bytes_sent = send(client_sock, buff, msg_len, 0);
-		if(bytes_sent <= 0){
-			printf("\nConnection closed!\n");
-			break;
+		if (strcmp(buff,"\n") == 0) {
+			printf("empty string");
+			buff[strlen(buff) - 1] = '\0';
+			bytes_sent = send(client_sock, buff, 1, 0);
+
+			if (bytes_sent == -1) {
+				printf("\nConnection closed!\n");
+				break;
+			}
+		}
+		else{
+			msg_len = strlen(buff);
+			if (msg_len == 0) break;
+			
+			bytes_sent = send(client_sock, buff, msg_len, 0);
+			if(bytes_sent <= 0){
+				printf("\nConnection closed!\n");
+				break;
+			}
 		}
 		
 		//receive echo reply
 		bytes_received = recv(client_sock, buff, BUFF_SIZE-1, 0);
 		if(bytes_received <= 0){
-			printf("\nError!Cannot receive data from sever!\n");
+			printf("\nError! Cannot receive data from sever!\n");
 			break;
 		}
 		

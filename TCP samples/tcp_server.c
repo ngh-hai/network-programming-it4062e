@@ -6,9 +6,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#define PORT 5550   /* Port that will be opened */ 
+#define PORT 5548   /* Port that will be opened */ 
 #define BACKLOG 2   /* Number of allowed connections */
-#define BUFF_SIZE 1024
+#define BUFF_SIZE 8192
 
 int main()
 {
@@ -61,7 +61,9 @@ int main()
 			}
 			else{
 				recv_data[bytes_received] = '\0';
-				printf("\nReceive: %s ", recv_data);
+				
+				printf("\nReceive %d bytes: %s ", bytes_received, recv_data);
+				if (strcmp(recv_data, "") == 0)	printf("empty string");
 			}
 			
 			//echo to client
@@ -70,6 +72,7 @@ int main()
 				printf("\nConnection closed");
 				break;
 			}
+			fflush(stdout);
 		}//end conversation
 		close(conn_sock);	
 	}
