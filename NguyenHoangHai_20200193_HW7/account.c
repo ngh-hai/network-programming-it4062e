@@ -16,7 +16,8 @@ Account new_account(char *username, char *password, int attempts, int is_active,
     return acc;
 }
 
-Account add_account(Account account_list, char *username, char *password, int attempts, int is_active, int is_signed_in) {
+Account
+add_account(Account account_list, char *username, char *password, int attempts, int is_active, int is_signed_in) {
     Account new_acc = new_account(username, password, attempts, is_active, is_signed_in);
     if (account_list == NULL) {
         account_list = new_acc;
@@ -54,8 +55,7 @@ int process_login(Account account_list, char *username, char *password) {
             if (strcmp(tmp->password, password) == 0) {
                 if (tmp->is_signed_in) {
                     return ACCOUNT_ALREADY_SIGNED_IN; // account already signed in
-                }
-                else if (tmp->is_active) {
+                } else if (tmp->is_active) {
                     tmp->is_signed_in = 1;
                     tmp->attempts = 0;
                     return VALID_CREDENTIALS; // valid credentials

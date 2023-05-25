@@ -24,7 +24,8 @@ typedef struct account *Account;
 
 Account new_account(char *username, char *password, int attempts, int is_active, int is_signed_in);
 
-Account add_account(Account account_list, char *username, char *password, int attempts, int is_active, int is_signed_in);
+Account
+add_account(Account account_list, char *username, char *password, int attempts, int is_active, int is_signed_in);
 
 Account read_account(const char *filename);
 

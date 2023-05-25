@@ -13,7 +13,6 @@
 #include <pthread.h>
 
 const int BACKLOG = 20;
-const int BUFF_SIZE = 1024;
 const char *FILENAME = "account.txt";
 
 pthread_mutex_t lock;
@@ -65,17 +64,17 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in clientAddr;
     int nEvents;
     socklen_t clientAddrLen;
-    char rcvBuff[BUFF_SIZE], sendBuff[BUFF_SIZE];
+    char rcvBuff[MAX_CHARS], sendBuff[MAX_CHARS];
     char *username[FD_SETSIZE], *password[FD_SETSIZE];
 
     // Initialize data structures
-    for (int i=0;i<FD_SETSIZE;++i){
+    for (int i = 0; i < FD_SETSIZE; ++i) {
         client[i] = -1;
         clientStatus[i] = -1;
         username[i] = NULL;
         password[i] = NULL;
     }
-    
+
     FD_ZERO(&checkfds);
     FD_SET(listenfd, &checkfds);
     int maxfd = listenfd;
@@ -86,45 +85,45 @@ int main(int argc, char *argv[]) {
     }
 
     // Accept connection and communicate with clients
-    while(true) {
+    while (true) {
+        int i;
         readfds = checkfds;
         nEvents = select(maxfd + 1, &readfds, NULL, NULL, NULL);
         if (nEvents == -1) {
             perror("Error: ");
             break;
-        }
-        else if (nEvents == 0) {
+        } else if (nEvents == 0) {
             printf("Timeout.\n");
             break;
         }
         if (FD_ISSET(listenfd, &readfds)) {
             clientAddrLen = sizeof(clientAddr);
             connfd = accept(listenfd, (struct sockaddr *) (&clientAddr), &clientAddrLen);
-            printf("New accepted connfd: %d\n",connfd);
-            for (int i=0;i<FD_SETSIZE;++i) {
+            printf("New accepted connfd: %d\n", connfd);
+            for (i = 0; i < FD_SETSIZE; ++i) {
                 if (client[i] <= 0) {
                     client[i] = connfd;
                     clientStatus[i] = USERNAME_REQUIRED;
-                    username[i] = (char*)malloc(sizeof(char)*BUFF_SIZE);
-                    password[i] = (char*)malloc(sizeof(char)*BUFF_SIZE);
-                    FD_SET(client[i],&checkfds); // WARNING!!!
+                    username[i] = (char *) malloc(sizeof(char) * MAX_CHARS);
+                    password[i] = (char *) malloc(sizeof(char) * MAX_CHARS);
+                    FD_SET(client[i], &checkfds);
                     if (connfd > maxfd) maxfd = connfd;
                     break;
                 }
-                if(i == FD_SETSIZE) {
-                    printf("Max number of clients reached.");
-                }
-                if(--nEvents <= 0)  continue;
+                if (--nEvents <= 0) continue;
+            }
+            if (i == FD_SETSIZE) {
+                printf("Max number of clients reached.");
             }
         }
         // check status of connfd(s)
-        for (int i=0;i<FD_SETSIZE;++i) {
+        for (i = 0; i < FD_SETSIZE; ++i) {
             if (client[i] <= 0) continue;
             if (FD_ISSET(client[i], &readfds)) {
                 int hasClosed = 0;
-                memset(rcvBuff, '\0', BUFF_SIZE);
-                memset(sendBuff, '\0', BUFF_SIZE);
-                int bytes_received = recv(client[i], rcvBuff, BUFF_SIZE, 0);
+                memset(rcvBuff, '\0', MAX_CHARS);
+                memset(sendBuff, '\0', MAX_CHARS);
+                int bytes_received = recv(client[i], rcvBuff, MAX_CHARS, 0);
                 if (bytes_received <= 0) {
                     printf("Connection closed.\n");
                     FD_CLR(client[i], &checkfds);
@@ -136,15 +135,14 @@ int main(int argc, char *argv[]) {
                     username[i] = NULL;
                     password[i] = NULL;
                     hasClosed = 1;
-                }
-                else {
+                } else {
                     rcvBuff[bytes_received - 1] = '\0';
-                    printf("Received from fd %d: %s\n",client[i],rcvBuff);
+                    printf("Received from fd %d: %s\n", client[i], rcvBuff);
                     switch (clientStatus[i]) {
                         case USERNAME_REQUIRED: {
-                            if (strcmp(rcvBuff,"") == 0) {
+                            if (strcmp(rcvBuff, "") == 0) {
                                 strcpy(sendBuff, "goodbye");
-                                memset(rcvBuff, '\0', BUFF_SIZE);
+                                memset(rcvBuff, '\0', MAX_CHARS);
                             } else {
                                 strcpy(username[i], rcvBuff);
                                 strcpy(sendBuff, "enter password: ");
@@ -155,18 +153,18 @@ int main(int argc, char *argv[]) {
                         case PASSWORD_REQUIRED: {
                             strcpy(password[i], rcvBuff);
                             clientStatus[i] = process_login(account_list, username[i], password[i]);
-                            switch(clientStatus[i]) {
-                                case USERNAME_REQUIRED:{
+                            switch (clientStatus[i]) {
+                                case USERNAME_REQUIRED: {
                                     strcpy(sendBuff, "username does not exist");
-                                    memset(username[i], '\0', BUFF_SIZE);
-                                    memset(password[i], '\0', BUFF_SIZE);
+                                    memset(username[i], '\0', MAX_CHARS);
+                                    memset(password[i], '\0', MAX_CHARS);
                                     break;
                                 }
                                 case ACCOUNT_ALREADY_SIGNED_IN: {
                                     clientStatus[i] = USERNAME_REQUIRED;
                                     strcpy(sendBuff, "account is already signed in");
-                                    memset(username[i], '\0', BUFF_SIZE);
-                                    memset(password[i], '\0', BUFF_SIZE);
+                                    memset(username[i], '\0', MAX_CHARS);
+                                    memset(password[i], '\0', MAX_CHARS);
                                     break;
                                 }
                                 case VALID_CREDENTIALS: {
@@ -178,33 +176,33 @@ int main(int argc, char *argv[]) {
                                 case WRONG_PASSWORD: {
                                     clientStatus[i] = USERNAME_REQUIRED;
                                     strcpy(sendBuff, "wrong password");
-                                    memset(username[i], '\0', BUFF_SIZE);
-                                    memset(password[i], '\0', BUFF_SIZE);
+                                    memset(username[i], '\0', MAX_CHARS);
+                                    memset(password[i], '\0', MAX_CHARS);
                                     break;
                                 }
                                 case ACCOUNT_NOT_ACTIVE: {
                                     clientStatus[i] = USERNAME_REQUIRED;
                                     strcpy(sendBuff, "account is not active");
-                                    memset(username[i], '\0', BUFF_SIZE);
-                                    memset(password[i], '\0', BUFF_SIZE);
+                                    memset(username[i], '\0', MAX_CHARS);
+                                    memset(password[i], '\0', MAX_CHARS);
                                     break;
                                 }
                                 case ACCOUNT_BLOCKED: {
                                     clientStatus[i] = USERNAME_REQUIRED;
                                     strcpy(sendBuff, "account is blocked due to 3 failed login attempts");
-                                    memset(username[i], '\0', BUFF_SIZE);
-                                    memset(password[i], '\0', BUFF_SIZE);
+                                    memset(username[i], '\0', MAX_CHARS);
+                                    memset(password[i], '\0', MAX_CHARS);
                                     break;
                                 }
                             }
                             break;
                         }
                         case VALID_CREDENTIALS: {
-                            if (strcmp(rcvBuff,"signout") == 0) {
+                            if (strcmp(rcvBuff, "signout") == 0) {
                                 clientStatus[i] = USERNAME_REQUIRED;
                                 strcpy(sendBuff, "signed out");
-                                memset(username[i], '\0', BUFF_SIZE);
-                                memset(password[i], '\0', BUFF_SIZE);
+                                memset(username[i], '\0', MAX_CHARS);
+                                memset(password[i], '\0', MAX_CHARS);
                             } else {
                                 strcpy(sendBuff, "enter \"signout\" to sign out");
                             }
