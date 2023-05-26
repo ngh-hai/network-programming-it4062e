@@ -200,6 +200,7 @@ int main(int argc, char *argv[]) {
                         case VALID_CREDENTIALS: {
                             if (strcmp(rcvBuff, "signout") == 0) {
                                 clientStatus[i] = USERNAME_REQUIRED;
+                                process_logout(account_list, username[i]);
                                 strcpy(sendBuff, "signed out");
                                 memset(username[i], '\0', MAX_CHARS);
                                 memset(password[i], '\0', MAX_CHARS);

@@ -77,6 +77,17 @@ int process_login(Account account_list, char *username, char *password) {
     return USERNAME_REQUIRED; // username not found
 }
 
+void process_logout(Account account_list, char *username) {
+    Account tmp = account_list;
+    while (tmp != NULL) {
+        if (strcmp(tmp->username, username) == 0) {
+            tmp->is_signed_in = 0;
+            return;
+        }
+        tmp = tmp->next;
+    }
+}
+
 void save_to_file(Account account_list, const char *filename) {
     FILE *f = fopen(filename, "w+");
     if (f == NULL) {

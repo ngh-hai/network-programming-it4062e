@@ -31,6 +31,8 @@ Account read_account(const char *filename);
 
 int process_login(Account account_list, char *username, char *password);
 
+void process_logout(Account account_list, char *username);
+
 void save_to_file(Account account_list, const char *filename);
 
 #endif //ACCOUNT_H
