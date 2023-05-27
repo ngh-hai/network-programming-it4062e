@@ -64,7 +64,6 @@ int main(int argc, char *argv[]) {
 
     // Step 4: Communicate with server
     while (true) {
-        printf("CURRENT STATUS: %d\n", status);
         // send message
         printf("\nInsert string to send:");
         memset(buff, '\0', BUFF_SIZE);
@@ -94,7 +93,6 @@ int main(int argc, char *argv[]) {
                 int nread;
 
                 while ((nread = fread(buff, 1, BUFF_SIZE, fp)) > 0) {
-                    // sleep(1.0);
                     printf("read %d bytes\n", nread);
                     bytes_sent = send(client_sock, buff, nread, 0);
                     printf("sent %d bytes\n", bytes_sent);
@@ -170,7 +168,6 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    printf("Client stopped!\n");
     // Step 4: Close socket
     close(client_sock);
     return 0;
