@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
                     {
                         rcvBuff[bytes_received - 1] = '\0';
                     }
-                    printf("Received from connfd %d: %s\n", client[i], rcvBuff);
+                    printf("Received %d bytes from connfd %d: %s\n", bytes_received, client[i], rcvBuff);
                     switch (clientStatus[i])
                     {
                     case USERNAME_REQUIRED:
@@ -320,15 +320,15 @@ int main(int argc, char *argv[])
                         else
                         { // receive data
                             rcvBuff[bytes_received - 1] = '\0';
+                            char tmp[BUFF_SIZE];
+                            strcpy(tmp, username[i]);
                             // TODO: upload image
                             // this string is the filename
                             strcpy(image[i], rcvBuff);
                             // prepend the username to the filename
-                            strcat(username[i], "_");
-                            strcat(username[i], image[i]);
-                            strcpy(image[i], username[i]);
-                            // restore username
-                            username[i][strlen(username[i]) - strlen(image[i]) - 1] = '\0';
+                            strcat(tmp, "_");
+                            strcat(tmp, image[i]);
+                            strcpy(image[i], tmp);
                             // if file exists, delete it
                             if (access(image[i], F_OK) != -1)
                             {
@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
                             // create a dummy file to write to
                             FILE *fp = fopen(image[i], "a+b");
                             fclose(fp);
-                            printf("received filename: %s\n", image[i]);
+                            printf("received filename: %s.", image[i]);
                             // strcpy(sendBuff, "received filename.");
                         }
                         break;
