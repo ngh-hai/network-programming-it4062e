@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
                     perror("\nError: ");
                 printf("Filename sent\n");
                 printf("Sending file...\n");
+                sleep(1);
                 int nread;
 
                 while ((nread = fread(buff, 1, BUFF_SIZE, fp)) > 0) {
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
                     }
                 }
 
-                sleep(2);
+                sleep(1);
 
                 memset(buff, '\0', BUFF_SIZE);
                 bytes_sent = send(client_sock, buff, 1, 0);
