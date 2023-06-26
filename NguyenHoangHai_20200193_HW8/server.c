@@ -102,7 +102,6 @@ int main(int argc, char *argv[])
                 sprintf(port, "%d", client_ports[connected_clients]);
                 strcat(filename, port);
                 strcat(filename, ".txt");
-                printf("%s", filename);
                 // if filename exists, delete it
                 if (access(filename, F_OK) == 0)
                 {
